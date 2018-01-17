@@ -151,7 +151,37 @@ function initMoves() {
 function updateMoves() {
     moves++;
     $('.moves').text(moves);
-    // TODO - update stars
+    
+    updateStars();
+}
+
+// initialize the stars count
+function initStars() {
+    stars = 3;
+    $('.stars i').removeClass("fa-star-o");
+    $('.stars i').addClass("fa-star");
+
+    updateStars();
+}
+
+// update stars based on how many moves have been used 
+function updateStars() {
+    if (moves <= 10) {
+        $('.stars .fa').addClass("fa-star");
+        stars = 3;
+    } else if (moves >= 11 && moves <= 20) {
+        $('.stars li:last-child .fa').removeClass("fa-star");
+        $('.stars li:last-child .fa').addClass("fa-star-o");
+        stars = 2;        
+    } else if (moves >= 21 && moves <=30) {
+        $('.stars li:nth-child(2) .fa').removeClass("fa-star");
+        $('.stars li:nth-child(2) .fa').addClass("fa-star-o");
+        stars = 1;        
+    } else if (moves >=31) {
+        $('.stars li .fa').removeClass("fa-star");
+        $('.stars li .fa').addClass("fa-star-o");
+        stars = 0;        
+    }
 }
 
 /*
@@ -177,11 +207,13 @@ timer.addEventListener('secondsUpdated', function (e) {
 // restart the game by clicking the reset button
 $('.restart').on('click', function (event) {
     initMoves();
+    initStars();
     timer.reset();
     init();
 });
 
 function init() {
+    initStars();
     shuffleCards();
     timer.start();
     checkAllMatched();
