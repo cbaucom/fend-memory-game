@@ -12,6 +12,10 @@ let moves = 0;
 // stars - the fewer moves it takes to win, the higher the number of stars will be. 3 stars is the highest. 
 let stars = 3;
 
+// define timer variables 
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
 
 /*
  * Display the cards on the page
@@ -149,16 +153,24 @@ function checkAllMatched() {
  */
 
 
+/* timer function with easytimer.js from https://github.com/albert-gonzalez/easytimer.js by Albert Gonzalez 
+*/
+let timer = new Timer();
+timer.start();
+timer.addEventListener('secondsUpdated', function (e) {
+    $('.timer .values').html(timer.getTimeValues().toString());
+});            
+
 // restart the game by clicking the reset button
 $('.restart').on('click', function (event) {
+    timer.reset();
     init();
 });
 
-
 function init() {
     shuffleCards();
-
-    checkMatched();
+    timer.start();
+    checkAllMatched();
 }
 
 // initialize the game on page load
