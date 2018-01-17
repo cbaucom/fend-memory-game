@@ -1,6 +1,16 @@
 /*
  * Create a list that holds all of your cards
  */
+const cards = ["anchor", "anchor", "bicycle", "bicycle", "bolt", "bolt", "bomb", "bomb", "cube", "cube", "diamond", "diamond", "leaf", "leaf", "paper-plane", "paper-plane"];
+
+// openCards - to hold cards for comparison
+let openCards = [];
+
+// moves - how many pairs of moves the user makes, starting moves should be 0
+let moves = 0;
+
+// stars - the fewer moves it takes to win, the higher the number of stars will be. 3 stars is the highest. 
+let stars = 3;
 
 
 /*
@@ -25,6 +35,107 @@ function shuffle(array) {
     return array;
 }
 
+function shuffleCards() {
+    // Shuffle the cards
+    let shuffledCards = shuffle(cards);
+
+    // reset the open cards list
+    openCards = [];
+
+    // define the card deck and remove all content 
+    const deck = $('.deck').empty();
+
+    // loop through each card and create the content
+    for (let card of shuffledCards) {
+        // set the HTML of a card
+        let cardContainer = $('<li class="card"><i class="fa" aria-hidden="true"></i></li>');
+
+        // add card to the deck 
+        deck.append(cardContainer);
+
+        // setup the icon for the card
+        let iconClass = "fa-" + card;
+
+        // add icon class to the card
+        cardContainer.find('.fa').addClass(iconClass);
+    }
+}
+
+
+$('.deck').on('click', '.card', function (event) {
+    // open the clicked card
+    let clickedCard = $(event.target);
+
+    showCard(clickedCard);
+
+    setTimeout(function () {
+        checkCards(clickedCard);
+    }, 500);
+
+});
+
+function showCard(card) {
+    card.addClass('open show');
+}
+
+function checkCards(card) {
+    // get symbol from the card
+    let cardSymbol = card.children('i').attr('class');
+
+    // check if there are two cards open
+    if (openCards.length > 0) {
+        openCards.push(card);
+
+        // get the last card
+        let lastCard = openCards[openCards.length - 2];
+        // get symbol of the last card
+        let lastCardSymbol = lastCard.children('i').attr('class');
+
+        // if match
+        if (lastCardSymbol === cardSymbol) {
+            // lock card
+            lockCard(card);
+            lockCard(lastCard);
+            // reset openCards
+            openCards = [];
+            // check if win
+            checkAllMatched();
+        } else {
+            // else if not match
+            hideCard(card, openCards);
+            hideCard(lastCard, openCards);
+        }
+        // TODO - update move count 
+    } else {
+        // if only one card opened, add card to the open list
+        openCards.push(card);
+    }
+}
+
+function lockCard(card) {
+    card.removeClass("open show");
+    card.addClass("match");
+}
+
+function hideCard(card, openCards) {
+    card.addClass("not-match");
+    setTimeout(function () {
+        card.removeClass("open show not-match");
+        openCards.pop();
+    }, 500);
+}
+
+function checkAllMatched() {
+    let matchedNum = $('.match').length;
+
+    if(matchedNum === $('.deck li').length){
+        // TODO - stop timer, show winning pop-up
+        $(".container").hide();
+    } else{
+        // TODO - hide winning pop-up
+        $(".container").show();
+    }
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -36,3 +147,14 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+function init() {
+    shuffleCards();
+
+    checkMatched();
+}
+
+// initialize the game on page load
+$(function () {
+    init();
+});
