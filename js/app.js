@@ -109,7 +109,7 @@ function checkCards(card) {
             hideCard(card, openCards);
             hideCard(lastCard, openCards);
         }
-        // TODO - update move count 
+        updateMoves();
     } else {
         // if only one card opened, add card to the open list
         openCards.push(card);
@@ -141,6 +141,19 @@ function checkAllMatched() {
     }
 }
 
+// initialize the moves value
+function initMoves() {
+    moves = 0;
+    $('.moves').text(moves);
+}
+
+// update the moves value
+function updateMoves() {
+    moves++;
+    $('.moves').text(moves);
+    // TODO - update stars
+}
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -163,6 +176,7 @@ timer.addEventListener('secondsUpdated', function (e) {
 
 // restart the game by clicking the reset button
 $('.restart').on('click', function (event) {
+    initMoves();
     timer.reset();
     init();
 });
