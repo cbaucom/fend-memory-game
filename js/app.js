@@ -133,10 +133,10 @@ function checkAllMatched() {
     let matchedNum = $('.match').length;
 
     if(matchedNum === $('.deck li').length){
-        // TODO - stop timer, show winning pop-up
-        $(".container").hide();
+        congratsPopup();
+
+        init();
     } else{
-        // TODO - hide winning pop-up
         $(".container").show();
     }
 }
@@ -182,6 +182,15 @@ function updateStars() {
         $('.stars li .fa').addClass("fa-star-o");
         stars = 0;        
     }
+}
+
+function congratsPopup() {
+    swal({
+        title: "Good job!", 
+        text: stars + " stars! You finished in " + moves + " moves with a time of " + timer.getTimeValues().toString(), 
+        type: "success",
+        button: "Play again!"
+    });
 }
 
 /*
