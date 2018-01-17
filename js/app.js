@@ -148,6 +148,13 @@ function checkAllMatched() {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+
+// restart the game by clicking the reset button
+$('.restart').on('click', function (event) {
+    init();
+});
+
+
 function init() {
     shuffleCards();
 
