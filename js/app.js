@@ -222,6 +222,7 @@ $('.restart').on('click', function (event) {
 });
 
 function init() {
+    initMoves();
     initStars();
     shuffleCards();
     timer.start();
