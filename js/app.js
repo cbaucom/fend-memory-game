@@ -161,9 +161,9 @@ function checkIfAllMatched() {
     let matchedNum = $('.match').length;
 
     if(matchedNum === $('.deck li').length){
-        congratsPopup();
+        endGame(moves, stars);
 
-        init();
+        initGame();
     } else{
         $(".container").show();
     }
@@ -223,13 +223,19 @@ function updateStars() {
 /**
  * @description popup modal from sweetalert.js 
  */
-function congratsPopup() {
+function endGame(moves, stars) {
     swal({
-        title: "Good job!", 
-        text: stars + " stars! You finished in " + moves + " moves with a time of " + timer.getTimeValues().toString(), 
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        title: "Great job! You won!", 
+        text: "In " + moves + " moves and " + stars + " stars and a time of " + timer.getTimeValues().toString() + " seconds.", 
         type: "success",
-        button: "Play again!"
-    });
+        confirmButtonText: "Play again!"
+    }).then(function(isConfirm) {
+        if (isConfirm) {
+            initGame();
+        }    
+    })
 }
 
 /**
@@ -249,17 +255,17 @@ $('.restart').on('click', function (event) {
     initMoves();
     initStars();
     timer.reset();
-    init();
+    initGame();
 });
 
 /**
  * @description initialize the game
  */
-function init() {
+function initGame() {
     initMoves();
     initStars();
     shuffleCards();
-    timer.start();
+    timer.reset();
     checkIfAllMatched();
 }
 
@@ -267,5 +273,5 @@ function init() {
  * @description  initialize the game on page load
  */
 $(function () {
-    init();
+    initGame();
 });
