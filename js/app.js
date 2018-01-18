@@ -209,14 +209,10 @@ function updateStars() {
         $('.stars li:last-child .fa').removeClass("fa-star");
         $('.stars li:last-child .fa').addClass("fa-star-o");
         stars = 2;        
-    } else if (moves >= 21 && moves <=30) {
+    } else if (moves >= 21) {
         $('.stars li:nth-child(2) .fa').removeClass("fa-star");
         $('.stars li:nth-child(2) .fa').addClass("fa-star-o");
         stars = 1;        
-    } else if (moves >=31) {
-        $('.stars li .fa').removeClass("fa-star");
-        $('.stars li .fa').addClass("fa-star-o");
-        stars = 0;        
     }
 }
 
