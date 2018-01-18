@@ -16,6 +16,11 @@ let openCards = [];
 let moves = 0;
 let stars = 3;
 
+    /**
+ * @description timer function with easytimer.js from https://github.com/albert-gonzalez/easytimer.js by Albert Gonzalez 
+ * @constructor Timer
+ */
+let timer = new Timer();
 let seconds = 0;
 let minutes = 0;
 let hours = 0;
@@ -78,7 +83,13 @@ $('.deck').on('click', '.card', function (event) {
     // open the clicked card
     let clickedCard = $(event.target);
 
-    showCard(clickedCard);
+    // start the timer
+    timer.start();
+    timer.addEventListener('secondsUpdated', function (e) {
+        $('.timer .values').html(timer.getTimeValues().toString());
+    });  
+
+    showCard(clickedCard); 
 
     setTimeout(function () {
         checkCards(clickedCard);
@@ -234,15 +245,7 @@ function endGame(moves, stars) {
     })
 }
 
-/**
- * @description timer function with easytimer.js from https://github.com/albert-gonzalez/easytimer.js by Albert Gonzalez 
- * @constructor Timer
- */
-let timer = new Timer();
-timer.start();
-timer.addEventListener('secondsUpdated', function (e) {
-    $('.timer .values').html(timer.getTimeValues().toString());
-});            
+         
 
 /**
  * @description restart the game by clicking the reset button
@@ -261,7 +264,6 @@ function initGame() {
     initMoves();
     initStars();
     shuffleCards();
-    timer.reset();
     checkIfAllMatched();
 }
 
