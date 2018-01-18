@@ -225,12 +225,12 @@ function updateStars() {
  */
 function endGame(moves, stars) {
     swal({
-        allowEscapeKey: false,
+        closeOnEsc: false,
         allowOutsideClick: false,
         title: "Great job! You won!", 
         text: "In " + moves + " moves and " + stars + " stars and a time of " + timer.getTimeValues().toString() + " seconds.", 
-        type: "success",
-        confirmButtonText: "Play again!"
+        icon: "success",
+        button: "Play again!"
     }).then(function(isConfirm) {
         if (isConfirm) {
             initGame();
