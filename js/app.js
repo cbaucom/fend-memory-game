@@ -1,18 +1,21 @@
-/*
+/**
  * Create a list that holds all of your cards
+ * @type {Array}
  */
 const cards = ["anchor", "anchor", "bicycle", "bicycle", "bolt", "bolt", "bomb", "bomb", "cube", "cube", "diamond", "diamond", "leaf", "leaf", "paper-plane", "paper-plane"];
 
-// openCards - to hold cards for comparison
+/**
+ * Define the global variables
+ * @type {Array} openCards - to hold cards for comparison
+ * @type {number} moves - how many pairs of moves the user makes, starting moves should be 0
+ * @type {number} stars - the fewer moves it takes to win, the higher the number of stars will be. 3 stars is the highest
+ * @type {number} seconds, minutes and nours
+ */
+
 let openCards = [];
-
-// moves - how many pairs of moves the user makes, starting moves should be 0
 let moves = 0;
-
-// stars - the fewer moves it takes to win, the higher the number of stars will be. 3 stars is the highest. 
 let stars = 3;
 
-// define timer variables 
 let seconds = 0;
 let minutes = 0;
 let hours = 0;
@@ -39,6 +42,9 @@ function shuffle(array) {
     return array;
 }
 
+/**
+ * @description shuffle cards
+ */
 function shuffleCards() {
     // Shuffle the cards
     let shuffledCards = shuffle(cards);
@@ -65,7 +71,9 @@ function shuffleCards() {
     }
 }
 
-
+/**
+ * @description click a card to show and check if they match
+ */
 $('.deck').on('click', '.card', function (event) {
     // open the clicked card
     let clickedCard = $(event.target);
@@ -78,10 +86,18 @@ $('.deck').on('click', '.card', function (event) {
 
 });
 
+/**
+ * @description show card
+ * @param {string} card - card which should be shown when clicked
+ */
 function showCard(card) {
     card.addClass('open show');
 }
 
+/**
+ * @description check if the cards match
+ * @param {string} card - card which was last clicked
+ */
 function checkCards(card) {
     // get symbol from the card
     let cardSymbol = card.children('i').attr('class');
@@ -103,7 +119,7 @@ function checkCards(card) {
             // reset openCards
             openCards = [];
             // check if win
-            checkAllMatched();
+            checkIfAllMatched();
         } else {
             // else if not match
             hideCard(card, openCards);
@@ -116,11 +132,20 @@ function checkCards(card) {
     }
 }
 
+/**
+ * @description Lock last opened card and set its class to 'match'
+ * @param {string} card - card to be marked as matched
+ */
 function lockCard(card) {
     card.removeClass("open show");
     card.addClass("match");
 }
 
+/**
+ * @description remove a card from the open card list and hide the card when not match
+ * @param {String} card - card to be marked as matched
+ * @param {Array} openCards - a list of open cards for match checking
+ */
 function hideCard(card, openCards) {
     card.addClass("not-match");
     setTimeout(function () {
@@ -129,7 +154,10 @@ function hideCard(card, openCards) {
     }, 500);
 }
 
-function checkAllMatched() {
+/**
+ * @description check if all cards matched, show congrats popup, reset the board
+ */
+function checkIfAllMatched() {
     let matchedNum = $('.match').length;
 
     if(matchedNum === $('.deck li').length){
@@ -141,13 +169,17 @@ function checkAllMatched() {
     }
 }
 
-// initialize the moves value
+/**
+ * @description initialize the moves value
+ */
 function initMoves() {
     moves = 0;
     $('.moves').text(moves);
 }
 
-// update the moves value
+/**
+ * @description update the moves value
+ */
 function updateMoves() {
     moves++;
     $('.moves').text(moves);
@@ -155,7 +187,9 @@ function updateMoves() {
     updateStars();
 }
 
-// initialize the stars count
+/**
+ * @description initialize the stars count
+ */
 function initStars() {
     stars = 3;
     $('.stars i').removeClass("fa-star-o");
@@ -164,7 +198,9 @@ function initStars() {
     updateStars();
 }
 
-// update stars based on how many moves have been used 
+/**
+ * @description update stars based on how many moves have been used 
+ */
 function updateStars() {
     if (moves <= 10) {
         $('.stars .fa').addClass("fa-star");
@@ -184,6 +220,9 @@ function updateStars() {
     }
 }
 
+/**
+ * @description popup modal from sweetalert.js 
+ */
 function congratsPopup() {
     swal({
         title: "Good job!", 
@@ -193,27 +232,19 @@ function congratsPopup() {
     });
 }
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+/**
+ * @description timer function with easytimer.js from https://github.com/albert-gonzalez/easytimer.js by Albert Gonzalez 
+ * @constructor Timer
  */
-
-
-/* timer function with easytimer.js from https://github.com/albert-gonzalez/easytimer.js by Albert Gonzalez 
-*/
 let timer = new Timer();
 timer.start();
 timer.addEventListener('secondsUpdated', function (e) {
     $('.timer .values').html(timer.getTimeValues().toString());
 });            
 
-// restart the game by clicking the reset button
+/**
+ * @description restart the game by clicking the reset button
+ */
 $('.restart').on('click', function (event) {
     initMoves();
     initStars();
@@ -221,15 +252,20 @@ $('.restart').on('click', function (event) {
     init();
 });
 
+/**
+ * @description initialize the game
+ */
 function init() {
     initMoves();
     initStars();
     shuffleCards();
     timer.start();
-    checkAllMatched();
+    checkIfAllMatched();
 }
 
-// initialize the game on page load
+/**
+ * @description  initialize the game on page load
+ */
 $(function () {
     init();
 });
