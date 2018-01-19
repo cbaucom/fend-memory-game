@@ -79,23 +79,63 @@ function shuffleCards() {
 /**
  * @description click a card to show and check if they match
  */
-$('.deck').on('click', '.card', function (event) {
-    // open the clicked card
-    let clickedCard = $(event.target);
+var addCardListener = function () {
+    
+    // $('.deck').find('.card').bind('click', function () {
+    //     var $this = $(this)
+    $('.deck').on('click', '.card', function (event) {
+        // open the clicked card
+        let clickedCard = $(event.target);
+        // start the timer
+        timer.start();
+        timer.addEventListener('secondsUpdated', function (e) {
+            $('.timer .values').html(timer.getTimeValues().toString());
+        });  
+        
+        if (clickedCard.hasClass('show') || clickedCard.hasClass('match')) { return true; }
 
-    // start the timer
-    timer.start();
-    timer.addEventListener('secondsUpdated', function (e) {
-        $('.timer .values').html(timer.getTimeValues().toString());
-    });  
+        // showCard(clickedCard); 
 
-    showCard(clickedCard); 
+        let card = clickedCard;
+        card.addClass('open show');
+        openCards.push(card);
 
-    setTimeout(function () {
-        checkCards(clickedCard);
-    }, 500);
+        // get symbol from the card
+        let cardSymbol = card.children('i').attr('class');        
+        // Compare with opened card
+        if (openCards.length > 1) {
+            // get the last card
+            let lastCard = openCards[openCards.length - 2];
+            // get symbol of the last card
+            let lastCardSymbol = lastCard.children('i').attr('class');
 
-});
+            // if match
+            if (lastCardSymbol === cardSymbol) {
+                // lock card
+                lockCard(card);
+                lockCard(lastCard);
+                // reset openCards
+                openCards = [];
+                // check if win
+                checkIfAllMatched();
+            } else {
+                // else if not match
+                hideCard(card, openCards);
+                hideCard(lastCard, openCards);
+            }
+            updateMoves();
+        }
+
+
+
+        // $(openCards[0]).off('click');
+
+        // setTimeout(function () {
+        //     checkCards(clickedCard);
+        // }, 500);
+
+    });
+}
 
 /**
  * @description show card
@@ -129,14 +169,14 @@ function checkCards(card) {
             lockCard(lastCard);
             // reset openCards
             openCards = [];
-            // check if win
-            checkIfAllMatched();
         } else {
             // else if not match
             hideCard(card, openCards);
             hideCard(lastCard, openCards);
         }
         updateMoves();
+        // check if win
+        checkIfAllMatched();
     } else {
         // if only one card opened, add card to the open list
         openCards.push(card);
@@ -174,7 +214,7 @@ function checkIfAllMatched() {
     if(matchedNum === $('.deck li').length){
         endGame(moves, stars);
 
-        initGame();
+        timer.stop();
     } else{
         $(".container").show();
     }
@@ -253,6 +293,7 @@ function endGame(moves, stars) {
 $('.restart').on('click', function (event) {
     initMoves();
     initStars();
+    addCardListener();
     timer.reset();
     initGame();
 });
@@ -263,8 +304,10 @@ $('.restart').on('click', function (event) {
 function initGame() {
     initMoves();
     initStars();
+    addCardListener();
     shuffleCards();
     checkIfAllMatched();
+    timer.reset();
 }
 
 /**

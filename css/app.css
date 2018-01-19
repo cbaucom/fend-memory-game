@@ -114,6 +114,28 @@ h1 {
     }
 }
 
+
+@media screen and (max-width: 350px){
+    .deck{
+        margin-top: 1rem;
+    }
+
+    .deck{
+        width: 170px;
+        min-height: 170px;
+        padding: 10px;
+    }
+
+    .deck .card {
+        height: 32px;
+        width: 32px;
+    }
+    
+    .fa {
+        font-size: .8em;
+    }
+}
+
 /*
  * Styles for the Score Panel
  */
@@ -150,11 +172,11 @@ h1 {
 @media screen and (max-width: 400px){
     .score-panel {
         font-size: 1em;
-        padding-left: 1em;
+        padding-left: 4.5em;
     }
 
     .restart {
-        padding-right: 1em;
+        padding-right: 2em;
     }
 }
 
