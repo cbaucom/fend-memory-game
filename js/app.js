@@ -17,7 +17,7 @@ let moves = 0;
 let stars = 3;
 
     /**
- * @description timer function with easytimer.js from https://github.com/albert-gonzalez/easytimer.js by Albert Gonzalez 
+ * @description timer function with easytimer.js from https://github.com/albert-gonzalez/easytimer.js by Albert Gonzalez
  * @constructor Timer
  */
 let timer = new Timer();
@@ -57,7 +57,7 @@ function shuffleCards() {
     // reset the open cards list
     openCards = [];
 
-    // define the card deck and remove all content 
+    // define the card deck and remove all content
     const deck = $('.deck').empty();
 
     // loop through each card and create the content
@@ -65,7 +65,7 @@ function shuffleCards() {
         // set the HTML of a card
         let cardContainer = $('<li class="card"><i class="fa" aria-hidden="true"></i></li>');
 
-        // add card to the deck 
+        // add card to the deck
         deck.append(cardContainer);
 
         // setup the icon for the card
@@ -80,7 +80,7 @@ function shuffleCards() {
  * @description click a card to show and check if they match
  */
 var addCardListener = function () {
-    
+
     // $('.deck').find('.card').bind('click', function () {
     //     var $this = $(this)
     $('.deck').on('click', '.card', function (event) {
@@ -90,18 +90,18 @@ var addCardListener = function () {
         timer.start();
         timer.addEventListener('secondsUpdated', function (e) {
             $('.timer .values').html(timer.getTimeValues().toString());
-        });  
-        
+        });
+
         if (clickedCard.hasClass('show') || clickedCard.hasClass('match')) { return true; }
 
-        // showCard(clickedCard); 
+        // showCard(clickedCard);
 
         let card = clickedCard;
         card.addClass('open show');
         openCards.push(card);
 
         // get symbol from the card
-        let cardSymbol = card.children('i').attr('class');        
+        let cardSymbol = card.children('i').attr('class');
         // Compare with opened card
         if (openCards.length > 1) {
             // get the last card
@@ -234,7 +234,7 @@ function initMoves() {
 function updateMoves() {
     moves++;
     $('.moves').text(moves);
-    
+
     updateStars();
 }
 
@@ -250,7 +250,7 @@ function initStars() {
 }
 
 /**
- * @description update stars based on how many moves have been used 
+ * @description update stars based on how many moves have been used
  */
 function updateStars() {
     if (moves <= 10) {
@@ -259,33 +259,33 @@ function updateStars() {
     } else if (moves >= 11 && moves <= 20) {
         $('.stars li:last-child .fa').removeClass("fa-star");
         $('.stars li:last-child .fa').addClass("fa-star-o");
-        stars = 2;        
+        stars = 2;
     } else if (moves >= 21) {
         $('.stars li:nth-child(2) .fa').removeClass("fa-star");
         $('.stars li:nth-child(2) .fa').addClass("fa-star-o");
-        stars = 1;        
+        stars = 1;
     }
 }
 
 /**
- * @description popup modal from sweetalert.js 
+ * @description popup modal from sweetalert.js
  */
 function endGame(moves, stars) {
     swal({
         closeOnEsc: false,
         allowOutsideClick: false,
-        title: "Great job! You won!", 
-        text: "In " + moves + " moves and " + stars + " stars and a time of " + timer.getTimeValues().toString() + " seconds.", 
+        title: "Great job! You won!",
+        text: "You earned " + stars + " stars and a time of " + timer.getTimeValues().toString() + " seconds.",
         icon: "success",
         button: "Play again!"
     }).then(function(isConfirm) {
         if (isConfirm) {
             initGame();
-        }    
+        }
     })
 }
 
-         
+
 
 /**
  * @description restart the game by clicking the reset button

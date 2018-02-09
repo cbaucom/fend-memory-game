@@ -108,7 +108,7 @@ h1 {
         height: 64px;
         width: 64px;
     }
-    
+
     .fa {
         font-size: .8em;
     }
@@ -130,7 +130,7 @@ h1 {
         height: 32px;
         width: 32px;
     }
-    
+
     .fa {
         font-size: .8em;
     }
@@ -165,7 +165,7 @@ h1 {
 }
 
 .score-panel .timer {
-    padding-left: 1rem; 
+    padding-left: 1rem;
     display: inline-block;
 }
 
@@ -186,4 +186,8 @@ h1 {
     display: flex;
     -webkit-justify-content: center;
             justify-content: center;
-  }
+}
+
+.swal-overlay {
+    background-color: rgba(255,255,255,1);
+}
